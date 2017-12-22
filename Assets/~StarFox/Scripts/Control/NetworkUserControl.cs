@@ -41,16 +41,26 @@ namespace StarFox
                 // Check if local user pressed mouse button
                 if(Input.GetMouseButton(0))
                 {
-                    // Try to shoot laser
-                    GameObject laser = weapon.Shoot();
-
-                    // Is the laser shot?
-                    if (laser != null)
+                    // Weapon can shoot?
+                    if (weapon.canShoot)
                     {
-                        // Spawn on network
-
+                        Cmd_Shoot();
                     }
                 }
+            }
+        }
+
+        [Command]
+        void Cmd_Shoot()
+        {
+            // Spawn the bullet on the server
+            GameObject laser = weapon.Shoot();
+
+            // Check if laser was actually created
+            if (laser != null)
+            {
+                // Spawn on network
+                NetworkServer.Spawn(laser);
             }
         }
     }

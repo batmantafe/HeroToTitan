@@ -9,7 +9,7 @@ namespace StarFox
         public GameObject muzzleFlashPrefab;
 
         [Header("Laser")]
-        public Laser[] laserPrefab;
+        public Laser[] laserPrefabs;
 
         [Header("Pulse")]
         public GameObject lockOnUI;
@@ -29,7 +29,7 @@ namespace StarFox
         GameObject FireLaser()
         {
             // Instantiate the current laser selected
-            GameObject clone = Instantiate(laserPrefab[currentLaser].gameObject);
+            GameObject clone = Instantiate(laserPrefabs[currentLaser].gameObject);
 
             // Set position and rotation of bullet to Arwing
             clone.transform.position = transform.position;
@@ -44,9 +44,18 @@ namespace StarFox
             return clone;
         }
 
+        public bool canShoot
+        {
+            get
+            {
+                Laser laserToShoot = laserPrefabs[currentLaser];
+                return shootTimer >= laserToShoot.shootRate;
+            }
+        }
+
         public GameObject Shoot()
         {
-            Laser laserToShoot = laserPrefab[currentLaser];
+            Laser laserToShoot = laserPrefabs[currentLaser];
 
             if (shootTimer >= laserToShoot.shootRate)
             {
